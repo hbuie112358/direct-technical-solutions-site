@@ -9,18 +9,11 @@ the user's software projects, and takes enquiries. The site is itself a showcase
 user in partnership with Claude, with its decisions, rules and controls on public record in
 this repository.
 
-## TypeScript
-
-@~/.claude/TYPESCRIPT_STANDARDS.md
-
-This import is from outside the repository: the user approves it once from the terminal CLI,
-started in the project folder; the VS Code extension skips it silently until then.
-
 ## Where things are
 - `docs/decisions/`: the decision log, one file per decision, indexed in its `README.md`. The
   site's requirements (R1–R9) are stated in decision 0001.
 - `docs/security/threat-model.md`: the threat model (not written yet).
-- `project-state.yaml`: not created yet; created at the first pause.
+- `project-state.yaml`: the session state, written at each pause and read at resume.
 - Hosting: not decided; chosen by fit when deployment is planned, after the site is built
   locally. The site goes on a new domain (not chosen yet).
 
@@ -36,7 +29,8 @@ Hugo, as a static site generator (decision 0001); plain CSS with design tokens (
 0002).
 - The site is static. The contact form is a separate, minimal handler, decided with the host.
 - No JavaScript toolchain in the site's build unless a decision adds one; scripts that are
-  needed are bundled by Hugo's built-in esbuild.
+  needed are plain JavaScript, bundled by Hugo's built-in esbuild. TypeScript would need a
+  decision: esbuild strips its types without checking them.
 - The Hugo version is pinned exactly, locally and in CI.
 - Content (projects; later blog posts and testimonials) is Markdown in `content/`. Templates
   check required fields and allowed values and stop the build with `errorf`, naming the file,
@@ -97,8 +91,8 @@ standard.
     a security review (`/security-review`) in addition to the code review.
 
 ### Code review in this project
-- Go code (site tooling, the contact form handler) and any TypeScript: Approach A; TypeScript
-  in the forms of `TYPESCRIPT_STANDARDS.md`, Go in Go's own idioms (no Go standards file yet).
+- Go code (site tooling, the contact form handler) and JavaScript: Approach A, each in its
+  language's own idioms (no Go or JavaScript standards file yet).
 - Templates and styles (`layouts/**/*.html`, `.css`): Approach A for structure, naming and
   comments, plus a check against the Framework rules above (tokens, accessibility, escaping,
   no inline styles).
