@@ -25,6 +25,15 @@ Address: `https://github.com/hbuie112358/direct-technical-solutions-site`.
   noreply address. The user kept `project-state.yaml` in the repository, with its history, and
   set a rule that committed files contain no personal data from now on (the project's
   `CLAUDE.md`, "No personal data in committed files").
+- **The history was rewritten once, before the first push** (2026-11-01, the user's decision, to
+  start the public record clean). Older versions of the project's `CLAUDE.md` contained a business
+  detail, and older versions of `project-state.yaml` held session notes with
+  local paths and details of the user's setup and habits. The rewrite removed the sentence from
+  every version of `CLAUDE.md` and removed every earlier version of `project-state.yaml`; its
+  history starts with the commit "remove business and personal details before publishing", which
+  therefore shows the file as added. Commits that contained only the state file (the session
+  pauses) dropped out. Every other file and commit message is unchanged; commit identifiers
+  changed. The original history is kept privately, outside the repository.
 - The user's credentials stay on the host: the repository is created on github.com and pushed
   from a host terminal, never from the development container.
 
