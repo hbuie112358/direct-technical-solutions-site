@@ -1,0 +1,42 @@
+# Continuous integration (decision 0008): on every pull request and every change to main, build
+# the development container's image and run all checks inside it, with the same pinned tools as
+# on the user's computer.
+#
+# Security (security rule 8; threat model T8): the action is pinned to a full commit SHA, the
+# workflow token can only read, the checkout keeps no credentials, and the workflow is never
+# triggered by pull_request_target, which would run a stranger's code with this repository's
+# permissions. tests/ci/workflows.test.sh fails if any of this is removed.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# A newer commit on the same branch cancels the run that is still going for an older one.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Build and test
+    # Pinned, not ubuntu-latest, so the runner does not change underneath the workflow. The
+    # checks themselves run in the project's own image; the runner only provides Docker.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build the development container image
+        run: docker build --tag site-checks .devcontainer
+
+      - name: Run all checks inside the image
+        run: docker run --rm --volume "$PWD:/workspace" --workdir /workspace site-checks bash .github/ci/run-checks.sh

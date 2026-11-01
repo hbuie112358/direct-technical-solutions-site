@@ -1,0 +1,33 @@
+# Dependabot version updates (decision 0008): a pull request when a pinned dependency has a newer
+# version, so pins do not quietly grow old. Each update goes through CI and the user's review
+# like any other change. Not covered: the Hugo and Go versions and the Debian snapshot date in
+# the Dockerfile's ARG lines, which are updated by hand.
+
+version: 2
+updates:
+  # The actions in .github/workflows, pinned to commit SHAs.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: build
+      include: scope
+
+  # The Go test module's dependencies (tests/site/go.mod).
+  - package-ecosystem: gomod
+    directory: /tests/site
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: build
+      include: scope
+
+  # The base image of the development container, pinned by digest.
+  - package-ecosystem: docker
+    directory: /.devcontainer
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: build
+      include: scope

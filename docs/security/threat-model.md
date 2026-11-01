@@ -85,6 +85,17 @@ their threats are added as they are.
   fresh module cache.
 - **Record:** decisions 0003 and 0006.
 
+### T8. Continuous integration runs untrusted code with the repository's permissions
+- **Threat:** on a public repository, anyone can open a pull request. A workflow that runs its
+  code with write permissions or secrets, or an action whose tag its owner moves to different
+  code, would let a stranger change the repository or take its credentials (security rule 8).
+- **Control:** in `.github/workflows/`, every action pinned to a full commit SHA, a read-only
+  token declared at the top, no `pull_request_target` trigger, checkouts that keep no
+  credentials. On GitHub: only GitHub's own actions, pinned by SHA, are allowed; external
+  contributors' workflows wait for the user's approval.
+- **Test:** `tests/ci/workflows.test.sh`: each rule, in every workflow file.
+- **Record:** decision 0008.
+
 ## Accepted risks
 
 ### A1. The container can reach the user's other projects' Claude folders
