@@ -32,9 +32,10 @@ live in their own Go module in the repository, and its `go.mod` and `go.sum` are
 here when it is first used.
 
 ## The module and its one dependency (added with the first tests, 2026-11-01)
-The tests are in `tests/site/`, module `directtechnicalsolutions.invalid/sitetests`: a
-placeholder path (`.invalid` can never be a real address), replaced when the repository has its
-public address.
+The tests are in `tests/site/`. The module was first named with a placeholder path,
+`directtechnicalsolutions.invalid/sitetests` (`.invalid` can never be a real address); since the
+repository got its public address (decision 0007) it is
+`github.com/hbuie112358/direct-technical-solutions-site/tests/site`.
 
 `golang.org/x/net/html`, pinned at v0.62.0 (released 2026-10-27):
 - **What it does:** parses the built pages, so a test checks elements and attributes, not text.

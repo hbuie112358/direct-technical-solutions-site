@@ -1,4 +1,4 @@
-module directtechnicalsolutions.invalid/sitetests
+module github.com/hbuie112358/direct-technical-solutions-site/tests/site
 
 go 1.27.3
 
