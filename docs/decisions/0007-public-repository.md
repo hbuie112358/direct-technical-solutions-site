@@ -28,6 +28,24 @@ Address: `https://github.com/hbuie112358/direct-technical-solutions-site`.
 - The user's credentials stay on the host: the repository is created on github.com and pushed
   from a host terminal, never from the development container.
 
+## Is a public repository a security risk?
+Not in itself: no control of this site depends on its code being secret, and the tests show
+publicly that each control is in place. The real risks of a public repository, and what covers
+each:
+- secrets in the code or its history: none found before the first push; security rule 6;
+- personal data: the project's rule against personal data in committed files;
+- code that attackers can read, such as the future contact form handler: it must hold up when
+  its logic is known (security rules 4 and 5);
+- continuous integration triggered by strangers' pull requests: actions pinned, permissions
+  minimal (security rule 8), and no workflow triggers that run untrusted code with the
+  repository's permissions;
+- contributions that change what runs on the user's computer: threat model A3.
+
+On GitHub, right after the repository is created, the user turns on secret scanning with push
+protection, Dependabot alerts, private vulnerability reporting, and protection for `main`
+(changes only through pull requests, with continuous integration passing once it exists).
+`SECURITY.md` tells visitors to report vulnerabilities privately.
+
 ## Consequences
 - Everything committed is public, including its history; the personal-data rule and the review
   gates apply before every commit.
