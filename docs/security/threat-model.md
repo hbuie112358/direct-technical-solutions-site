@@ -38,7 +38,7 @@ their threats are added as they are.
 - **Threat:** Hugo adds `<meta name="generator" content="Hugo 0.169.0">` to the home page. A
   visible version lets an attacker match the site to known vulnerabilities (security rule 5).
 - **Control:** `disableHugoGeneratorInject = true` in `hugo.toml`.
-- **Test:** pending (the site's test tools are the next decision): no built page contains a
+- **Test:** `TestNoPageHasAGeneratorTag` in `tests/site/security_test.go`: no built page has a
   `generator` meta tag.
 - **Record:** decision 0005.
 
@@ -47,16 +47,19 @@ their threats are added as they are.
   allowed them would need `'unsafe-inline'`, which also lets injected styles through (security
   rule 1).
 - **Control:** `markup.highlight.noClasses = false` in `hugo.toml`: highlighting by CSS classes.
-- **Test:** pending: a page with a code block is built, and no output contains `style=`.
+- **Test:** `TestCodeHighlightingUsesClassesNotInlineStyles`: a page with a code block is
+  built; no element has a `style` attribute, and the code is highlighted by classes.
 - **Record:** decisions 0001 and 0005.
 
 ### T5. Markdown carries raw HTML or script into a page
 - **Threat:** raw HTML in a Markdown file, including `<script>`, would be published as it is
   (security rule 3).
 - **Control:** `markup.goldmark.renderer.unsafe = false` in `hugo.toml` (Hugo's default, written
-  out so a change is a visible, reviewed edit).
-- **Test:** pending: a page containing raw HTML is built, and the HTML does not appear in the
-  output.
+  out so a change is a visible, reviewed edit). Hugo leaves the raw HTML out and warns, naming
+  the file; the build treats warnings as failures (decision 0005), so such a page stops the
+  build instead of being published without its HTML.
+- **Test:** `TestRawHTMLInMarkdownStopsTheBuild`: a page with a `<script>` and a `<div>` stops
+  the build, naming the file and Hugo's warning `warning-goldmark-raw-html`.
 - **Record:** decision 0005.
 
 ### T6. The build pulls in another origin's content or runs other programs
@@ -66,7 +69,11 @@ their threats are added as they are.
 - **Control:** `[security]` in `hugo.toml` allows no remote fetches and no commands; overrides in
   `layouts/_shortcodes/` (`youtube`, `vimeo`, `vimeo_simple`, `x`, `x_simple`, `instagram`)
   stop the build, naming the file.
-- **Test:** pending: a template fetch and each embed shortcode each fail the build.
+- **Tests:** `TestRemoteFetchIsRefusedByPolicy` (a fetch from a `.test` address fails, naming
+  `security.http.urls`; without the policy it fails from DNS, which the test rejects),
+  `TestRunningProgramsIsRefusedByPolicy` (Hugo's git use fails, naming `security.exec.allow`),
+  `TestEmbedShortcodesAreRefused` (each of the six fails, naming the file and the shortcode, and
+  not stopped by the fetch policy instead).
 - **Record:** decision 0005.
 
 ### T7. The go command runs a toolchain that was never checked
@@ -95,7 +102,5 @@ could serve an older, still validly signed snapshot. They could not serve anythi
 sign. Accepted; see decision 0003.
 
 ## Controls without a test yet
-- **T3 to T6:** each was checked by hand (2026-11-01); their automated tests come with the
-  decision on the site's test tools, before the scaffold is merged into `main`.
 - **Hugo and Go download checksums** (Dockerfile): the image build fails if a download does not
   match the SHA-256 written in the Dockerfile. Nothing fails if that check is removed. Open.

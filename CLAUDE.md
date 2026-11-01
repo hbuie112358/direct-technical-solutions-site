@@ -30,8 +30,12 @@ Run inside the development container, from the repository root:
 Warnings fail the build (decision 0005).
 
 ## Testing
-For the site, not set up yet: the tools for each level of the global `TESTING_APPROACH.md` are
-chosen in a decision record when the scaffold is created.
+The built site is tested with Go (decision 0006), in `tests/site/`. Each test builds its own
+copy of the site with Hugo and checks the result (integration level):
+- `cd tests/site && go test -shuffle=on ./...`, inside the container (it needs Hugo and git).
+- Each test of a security control was checked to fail when the control is removed; a new
+  control's test is checked the same way.
+Link checking, accessibility and browser tests are not set up yet; each needs its own decision.
 
 Shell scripts are tested by plain bash scripts next to them (decision 0004):
 - `bash .devcontainer/tests/check-host-before-start.test.sh`: unit level, runs anywhere.

@@ -31,6 +31,24 @@ live in their own Go module in the repository, and its `go.mod` and `go.sum` are
 (security rule 7). Further libraries need their own record; `golang.org/x/net/html` is recorded
 here when it is first used.
 
+## The module and its one dependency (added with the first tests, 2026-11-01)
+The tests are in `tests/site/`, module `directtechnicalsolutions.invalid/sitetests`: a
+placeholder path (`.invalid` can never be a real address), replaced when the repository has its
+public address.
+
+`golang.org/x/net/html`, pinned at v0.62.0 (released 2026-10-27):
+- **What it does:** parses the built pages, so a test checks elements and attributes, not text.
+- **Alternatives:** none in Go's standard library, which only escapes HTML; text matching, which
+  a `style=` inside ordinary text would fool.
+- **Maintenance:** maintained by the Go team as part of the `golang.org/x` repositories; released
+  regularly.
+- **Security record:** Go's vulnerability database lists 18 advisories for the package since
+  2020, mostly parsing loops and slowdowns on malicious HTML; v0.62.0 fixes all of them (the
+  last two, GO-2026-6860 and GO-2026-6866, are fixed in it). Here it only reads the site's own
+  build output in tests and is not part of the published site.
+- `go.mod` and `go.sum` are committed; the checksums were checked against Go's checksum database
+  when it was downloaded.
+
 ## Why
 - One language for the project's own code: the tests now, site tooling and the contact form
   handler later, possibly browser tests.
@@ -49,4 +67,7 @@ here when it is first used.
 - Go releases and their fixes (1.27.3: security fixes to `crypto/x509`, 2026-10-19):
   https://go.dev/doc/devel/release
 - Go downloads and checksums: https://go.dev/dl/
+- Go vulnerability database, golang.org/x/net: https://pkg.go.dev/vuln/list?q=golang.org/x/net
+- golang.org/x/net v0.62.0 on the Go module proxy:
+  https://proxy.golang.org/golang.org/x/net/@v/v0.62.0.info
 - Go 1.27 release notes: https://go.dev/doc/go1.27

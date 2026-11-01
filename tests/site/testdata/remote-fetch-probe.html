@@ -1,0 +1,4 @@
+{{- /* A shortcode that fetches a stylesheet from another origin. The .test top-level domain is
+reserved and never resolves, so without the security policy the fetch still fails, but from DNS
+and without naming the policy. */ -}}
+{{- with resources.GetRemote "http://site.test/probe.css" }}{{ .Content }}{{ end -}}
