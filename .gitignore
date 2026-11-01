@@ -3,6 +3,9 @@
 /resources/_gen/
 .hugo_build.lock
 
+# Personal editor settings: each person's own, nothing the site depends on.
+/.vscode/
+
 # Security rule 6: secrets come from the environment, never from the repository.
 .env
 .env.*
