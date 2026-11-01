@@ -3,6 +3,8 @@
 What this file is: what is true of this project alone, loaded only in this repository; the
 shared rules are in `~/.claude/CLAUDE.md`; "the user" is the person Claude works with.
 
+@~/.claude/GO_STANDARDS.md
+
 ## About
 The website of Direct Technical Solutions, the user's business: it presents the business and
 the user's software projects, and takes enquiries. The site is itself a showcase: built by the
@@ -19,15 +21,27 @@ this repository.
   locally. The site goes on a new domain (not chosen yet).
 
 ## Commands
-Not set up yet; added with the project scaffold.
+Run inside the development container, from the repository root:
+- `hugo server --port 4313 --panicOnWarning`: local preview at http://localhost:4313 (VS Code
+  forwards the port; not yet tried).
+- `hugo --panicOnWarning --gc --minify`: the build, into `public/` (ignored by git).
+- `hugo new content projects/<name>.md`: a new project entry from the archetype.
+
+Warnings fail the build (decision 0005).
 
 ## Testing
-For the site, not set up yet: the tools for each level of the global `TESTING_APPROACH.md` are
-chosen in a decision record when the scaffold is created.
+The built site is tested with Go (decision 0006), in `tests/site/`. Each test builds its own
+copy of the site with Hugo and checks the result (integration level):
+- `cd tests/site && go test -shuffle=on ./...`, inside the container (it needs Hugo and git).
+- Each test of a security control was checked to fail when the control is removed; a new
+  control's test is checked the same way.
+Link checking, accessibility and browser tests are not set up yet; each needs its own decision.
 
 Shell scripts are tested by plain bash scripts next to them (decision 0004):
 - `bash .devcontainer/tests/check-host-before-start.test.sh`: unit level, runs anywhere.
 - `bash .devcontainer/tests/container-umask.test.sh`: scenario level, inside the running
+  container.
+- `bash .devcontainer/tests/container-go-toolchain.test.sh`: scenario level, inside the running
   container.
 
 ## Framework
@@ -97,8 +111,9 @@ standard.
     a security review (`/security-review`) in addition to the code review.
 
 ### Code review in this project
-- Go code (site tooling, the contact form handler) and JavaScript: Approach A, each in its
-  language's own idioms (no Go or JavaScript standards file yet).
+- Go code (site tests, site tooling, the contact form handler): Approach A, in the forms of
+  `~/.claude/GO_STANDARDS.md`.
+- JavaScript: Approach A, in the language's own idioms (no JavaScript standards file yet).
 - Templates and styles (`layouts/**/*.html`, `.css`): Approach A for structure, naming and
   comments, plus a check against the Framework rules above (tokens, accessibility, escaping,
   no inline styles).
@@ -107,6 +122,14 @@ standard.
 
 *Why:* the global methodology names application code and configuration; web files are partly
 both.
+
+### Branches
+Every change is made on its own branch (`<type>/<short-name>`, the type as in the commit
+message, e.g. `feat/site-scaffold`), never directly on `main`. Claude merges into `main` with
+`git merge --no-ff` only after the review gates have passed and the user says so, then deletes
+the branch; with a GitHub remote, the merge becomes a pull request. Pause commits go on the
+current branch. *Why:* `main` holds only reviewed work, and each change stays visible as one
+unit in the public history. Adopted 2026-11-01 as a trial; the user reviews how it works.
 
 ### Decisions are recorded
 Every choice of tool, dependency, architecture or security control gets a record in

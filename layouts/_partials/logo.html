@@ -1,0 +1,14 @@
+{{- /*
+The logo, cut and sized from the original in assets/images at build time, so the repository
+keeps one source. The crop removes the empty margin around the artwork; the image is made at
+twice its display height for sharp high-density screens, and the width and height attributes
+reserve its space before it loads. The logo contains the business name, so its alt text is
+the name.
+*/ -}}
+{{- $logo := site.Params.logo -}}
+{{- with resources.Get $logo.source -}}
+  {{- $image := (.Crop $logo.crop).Resize (printf "x%d webp" $logo.renderHeight) -}}
+  <img class="logo" src="{{ $image.RelPermalink }}" width="{{ div $image.Width 2 }}" height="{{ div $image.Height 2 }}" alt="{{ site.Title }}">
+{{- else -}}
+  {{- errorf "logo %q not found in assets/ (params.logo.source)" $logo.source -}}
+{{- end -}}

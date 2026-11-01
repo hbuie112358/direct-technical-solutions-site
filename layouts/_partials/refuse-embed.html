@@ -1,0 +1,8 @@
+{{- /*
+Stops the build when Markdown uses one of Hugo's built-in embed shortcodes, naming the file.
+Each embed loads another site's frames and scripts (security rule 2). Hugo's own switch
+(privacy.<service>.disable) only drops the embed silently, so the page would be missing content
+without anyone noticing; failing the build makes the choice visible. An embed that is wanted
+needs a decision first. Called by the overrides in layouts/_shortcodes/.
+*/ -}}
+{{- errorf "%s: the %q shortcode embeds third-party content, which needs a decision first (security rule 2)" .Page.File.Path .Name -}}

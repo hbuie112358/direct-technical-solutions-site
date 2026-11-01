@@ -1,0 +1,16 @@
+{{- /*
+One stylesheet, built from the token file and the component files in cascade-layer order
+(decision 0002). A missing file stops the build naming it, rather than failing deeper in Hugo.
+The fingerprint puts a hash in the file name, so a changed stylesheet is never served from a
+stale cache; the integrity attribute lets the browser refuse a file that does not match that hash.
+*/ -}}
+{{- $sources := slice -}}
+{{- range slice "css/tokens.css" "css/base.css" "css/layout.css" "css/components.css" -}}
+  {{- with resources.Get . -}}
+    {{- $sources = $sources | append . -}}
+  {{- else -}}
+    {{- errorf "stylesheet %q not found in assets/" . -}}
+  {{- end -}}
+{{- end -}}
+{{- $styles := $sources | resources.Concat "css/site.css" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">

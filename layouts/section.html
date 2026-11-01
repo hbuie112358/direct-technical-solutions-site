@@ -1,0 +1,18 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+{{- with .Pages }}
+<ul class="entry-list">
+  {{- range . }}
+  <li class="entry">
+    <h2 class="entry__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    {{- with .Description }}
+    <p>{{ . }}</p>
+    {{- end }}
+  </li>
+  {{- end }}
+</ul>
+{{- else }}
+<p>Nothing published here yet.</p>
+{{- end }}
+{{ end }}

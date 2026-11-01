@@ -1,0 +1,20 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+{{- with .Pages }}
+<ul class="entry-list">
+  {{- range . }}
+  {{- /* Validated here too, so an invalid entry stops the build with the clear message, whichever
+  page Hugo renders first. */}}
+  {{- partial "validate-project.html" . }}
+  <li class="entry">
+    <h2 class="entry__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    {{ partial "project-status.html" .Params.status }}
+    <p>{{ .Description }}</p>
+  </li>
+  {{- end }}
+</ul>
+{{- else }}
+<p>No projects published yet.</p>
+{{- end }}
+{{ end }}

@@ -39,3 +39,19 @@ RUN curl --fail --silent --show-error --location --output /tmp/hugo.tar.gz \
     && tar -xzf /tmp/hugo.tar.gz -C /usr/local/bin hugo \
     && rm /tmp/hugo.tar.gz \
     && hugo version
+
+# Go, for the site's tests (decision 0006) and later the site's own tooling. Pinned and checked
+# the same way as Hugo; the checksum is the one go.dev/dl publishes for this file.
+ARG GO_VERSION=1.27.3
+ARG GO_SHA256=65efbc80fdc1fa2cd2631cad5b481777a68e8725f34e89f50fc6ac714e379b40
+RUN curl --fail --silent --show-error --location --output /tmp/go.tar.gz \
+        "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz" \
+    && echo "${GO_SHA256}  /tmp/go.tar.gz" | sha256sum --check --strict \
+    && tar -xzf /tmp/go.tar.gz -C /usr/local \
+    && rm /tmp/go.tar.gz \
+    && /usr/local/go/bin/go version
+
+# GOTOOLCHAIN=local keeps the pinned Go: by default, a go.mod that asks for a newer version makes
+# the go command download and run that toolchain itself, outside the checksum above.
+ENV PATH="/usr/local/go/bin:/root/go/bin:${PATH}" \
+    GOTOOLCHAIN=local

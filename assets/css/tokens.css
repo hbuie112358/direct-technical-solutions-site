@@ -1,0 +1,60 @@
+/*
+ * Design tokens (decision 0002): every colour, space, type size, radius, shadow and duration the
+ * site uses. Component styles use these, never raw values.
+ *
+ * A starting point for the visual design, not the design itself. Two colours are taken from the
+ * logo by Hugo's image colour analysis: the background (#f5f4f3) and the navy (#103451); a page
+ * in the logo's own background colour shows the logo without a visible box around it.
+ * Contrast measured against --color-background and --color-surface (WCAG 2.2 AA: 4.5:1 for text,
+ * 3:1 for focus indicators), noted beside each colour.
+ */
+
+/* The layer order is declared once, here, so later files cannot reorder the cascade. */
+@layer tokens, base, layout, components;
+
+@layer tokens {
+  :root {
+    --color-background: #f5f4f3;
+    --color-surface: #ebe9e6;
+    --color-text: #1c2733;        /* 13.8:1 on background, 12.5:1 on surface */
+    --color-text-muted: #4f5b67;  /* 6.3:1, 5.7:1 */
+    --color-accent: #103451;      /* 11.7:1, 10.6:1: the logo's navy, used for links */
+    --color-focus: #1d6fb8;       /* 4.8:1, 4.3:1: focus rings (3:1 needed) */
+    --color-border: #c9c6c1;      /* 1.6:1: decorative separators only, never a control's edge */
+
+    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --font-size-small: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-large: 1.25rem;
+    --font-size-heading-2: 1.5rem;
+    --font-size-heading-1: 2rem;
+    --font-weight-heading: 700;
+    --line-height-body: 1.6;
+    --line-height-heading: 1.2;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2rem;
+    --space-6: 3rem;
+
+    --radius-small: 0.25rem;
+
+    --width-content: 42rem;
+    --width-page: 64rem;
+    --height-logo: 3rem;
+    --width-focus-ring: 3px;
+    --width-border: 1px;
+
+    --duration-short: 150ms;
+  }
+
+  /* Motion stays subtle and disappears for visitors who ask for less (project rule). */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --duration-short: 0ms;
+    }
+  }
+}

@@ -42,6 +42,9 @@ A devcontainer (`.devcontainer/`), following those shared rules:
     the date the image was built, `20261027T000000Z`;
   - Hugo 0.169.0 (released 2026-10-27), standard edition, linux-amd64, checked against a SHA-256
     written in the Dockerfile.
+  - Go 1.27.3 (released 2026-10-19), added 2026-11-01 for the site's tests (decision 0006):
+    linux-amd64, checked against the SHA-256 published on go.dev/dl, written in the Dockerfile;
+    `GOTOOLCHAIN=local`, so the `go` command never downloads another toolchain by itself.
 
 ## Why
 - One place defines every tool and its exact version, for the user's machine now and for CI

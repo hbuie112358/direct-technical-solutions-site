@@ -1,0 +1,55 @@
+# Site configuration (decision 0005). Settings that a project rule depends on carry the rule.
+
+# The domain is not chosen yet; .invalid is reserved for exactly this (RFC 6761), so nothing can
+# be published to a real address by mistake.
+baseURL = 'https://example.invalid/'
+locale = 'en'
+title = 'Direct Technical Solutions'
+
+# Hugo would add <meta name="generator" content="Hugo 0.169.0"> to the home page. Security rule 5:
+# responses never reveal versions.
+disableHugoGeneratorInject = true
+
+# No tags or categories yet. Without templates for them, Hugo warns, and the build runs with
+# --panicOnWarning, so they are switched off until they are wanted.
+disableKinds = ['taxonomy', 'term']
+
+enableRobotsTXT = true
+
+[params]
+  # The build stops on any other Hugo (layouts/_partials/check-hugo-version.html). Keep in step
+  # with HUGO_VERSION in .devcontainer/Dockerfile.
+  requiredHugoVersion = '0.169.0'
+
+[params.logo]
+  # The original (1752 x 898) has a wide empty margin; the crop keeps the artwork. The header
+  # shows it at half the rendered height, for sharp high-density screens.
+  source = 'images/logo-direct-technical-solutions.png'
+  crop = '1460x520 center'
+  renderHeight = 96
+
+[params.projects]
+  # Checked on every project page (layouts/_partials/validate-project.html); a missing field or
+  # an unknown status stops the build, naming the file.
+  requiredFields = ['title', 'description', 'status']
+  statuses = ['live', 'completed', 'in-development', 'prototype', 'paused', 'retired']
+
+# The build may not fetch from other sites or run other programs. Hugo's defaults allow fetching
+# any https address (resources.GetRemote) and running sass, go, git, node and postcss; the site
+# needs none of them, and a fetched file would put another origin's content into the site
+# (security rule 2). Checked on Hugo 0.169.0: a remote fetch is refused with "access denied", and
+# enableGitInfo fails instead of running git.
+[security.exec]
+  allow = ['none']
+[security.http]
+  urls = ['none']
+
+[markup.goldmark.renderer]
+  # Security rule 3: raw HTML in Markdown stays disabled. This is Hugo's default; it is written
+  # here so that changing it is a visible, reviewed edit.
+  unsafe = false
+
+[markup.highlight]
+  # Code highlighting by CSS classes, not inline styles, so the Content-Security-Policy needs no
+  # 'unsafe-inline'. Hugo's default is inline styles (noClasses = true).
+  noClasses = false
