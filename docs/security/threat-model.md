@@ -69,6 +69,15 @@ their threats are added as they are.
 - **Test:** pending: a template fetch and each embed shortcode each fail the build.
 - **Record:** decision 0005.
 
+### T7. The go command runs a toolchain that was never checked
+- **Threat:** by default, a `go.mod` that asks for a newer Go makes the `go` command download
+  that toolchain and run it, bypassing the version and checksum pinned in the Dockerfile.
+- **Control:** `GOTOOLCHAIN=local` in the Dockerfile: the `go` command refuses instead.
+- **Test:** `.devcontainer/tests/container-go-toolchain.test.sh`, run inside the container: the
+  setting is `local`, and a module asking for Go 1.99 is refused with nothing downloaded into a
+  fresh module cache.
+- **Record:** decisions 0003 and 0006.
+
 ## Accepted risks
 
 ### A1. The container can reach the user's other projects' Claude folders
@@ -90,5 +99,3 @@ sign. Accepted; see decision 0003.
   decision on the site's test tools, before the scaffold is merged into `main`.
 - **Hugo and Go download checksums** (Dockerfile): the image build fails if a download does not
   match the SHA-256 written in the Dockerfile. Nothing fails if that check is removed. Open.
-- **`GOTOOLCHAIN=local`** (Dockerfile): the `go` command never downloads another toolchain by
-  itself. Its test (a scenario test in the container, decision 0004) comes after the rebuild.
