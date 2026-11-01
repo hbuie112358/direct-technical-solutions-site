@@ -52,6 +52,12 @@ highlighting defaults to inline styles (`noClasses = true`). It also found that 
   appear in the menu.
 
 ## The logo
+The logo was generated with AI: the original's embedded content credentials (a signed C2PA
+manifest) name OpenAI's image model (`gpt-image`), the source type "trainedAlgorithmicMedia",
+and the date 2026-08-13. The manifest stays in the original in the repository; the published
+WebP copy does not carry it, so the site states the logo's origin on its "How this site was
+built" page.
+
 The original (1752 × 898 PNG) is cropped at build time to remove its empty margin and resized to
 twice its display height, as WebP. Hugo's image colour analysis gave the logo's two dominant
 colours: the background `#f5f4f3` and the navy `#103451`. The page background uses the
