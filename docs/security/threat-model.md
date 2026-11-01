@@ -101,6 +101,14 @@ expiry check turned off (a snapshot's index is expired by design). Someone on th
 could serve an older, still validly signed snapshot. They could not serve anything Debian did not
 sign. Accepted; see decision 0003.
 
+### A3. Opening the project runs a repository script on the host
+`.devcontainer/devcontainer.json` runs `check-host-before-start.sh` on the host, as the user,
+before every container start (`initializeCommand`). Anyone who could change that script in the
+repository could run code on the user's computer the next time the project is opened. This is
+how devcontainers work. Today only the user commits; once the repository takes contributions
+from others, a change to `.devcontainer/` is reviewed before it is merged, and the user does not
+open a branch with an unreviewed change to it. Accepted, recorded 2026-11-01.
+
 ## Controls without a test yet
 - **Hugo and Go download checksums** (Dockerfile): the image build fails if a download does not
   match the SHA-256 written in the Dockerfile. Nothing fails if that check is removed. Open.

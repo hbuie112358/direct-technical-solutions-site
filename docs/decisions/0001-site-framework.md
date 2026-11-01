@@ -111,3 +111,8 @@ contact form is a separate, minimal handler, decided with the host.
 Not yet verified: Hugo's exact current version and release date (checked at install); the
 built-in SEO templates' current names; how the structured-data script block interacts with the
 Content-Security-Policy.
+
+*Note, 2026-11-01:* all three are now verified. Hugo 0.169.0, released 2026-10-27, is pinned
+(decision 0003). The built-in SEO templates are `opengraph.html`, `twitter_cards.html` and
+`schema.html`; `schema.html` writes meta tags, not a script block, so the
+Content-Security-Policy needs nothing for it (decision 0005).
