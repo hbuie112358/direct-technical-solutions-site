@@ -88,5 +88,7 @@ sign. Accepted; see decision 0003.
 ## Controls without a test yet
 - **T3 to T6:** each was checked by hand (2026-11-01); their automated tests come with the
   decision on the site's test tools, before the scaffold is merged into `main`.
-- **Hugo download checksum** (Dockerfile): the build fails if the download does not match the
-  SHA-256 written in the Dockerfile. Nothing fails if that check is removed. Open.
+- **Hugo and Go download checksums** (Dockerfile): the image build fails if a download does not
+  match the SHA-256 written in the Dockerfile. Nothing fails if that check is removed. Open.
+- **`GOTOOLCHAIN=local`** (Dockerfile): the `go` command never downloads another toolchain by
+  itself. Its test (a scenario test in the container, decision 0004) comes after the rebuild.
