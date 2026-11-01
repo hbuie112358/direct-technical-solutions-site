@@ -1,0 +1,19 @@
+{{- partialCached "check-hugo-version.html" . "once-per-build" -}}
+<!doctype html>
+<html lang="{{ site.Language.Lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{ partial "head/seo.html" . }}
+  {{ partial "head/styles.html" . }}
+</head>
+<body>
+  {{- /* The first focusable element, so keyboard users can go straight past the header (WCAG 2.4.1). */}}
+  <a class="skip-link" href="#main">Skip to content</a>
+  {{ partial "site-header.html" . }}
+  <main id="main" class="page-width">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "site-footer.html" . }}
+</body>
+</html>

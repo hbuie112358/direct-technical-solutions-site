@@ -1,0 +1,17 @@
+/* Page structure: the centred page width and the spacing of the main regions. Tokens only. */
+@layer layout {
+  .page-width {
+    max-width: var(--width-page);
+    margin-inline: auto;
+    padding-inline: var(--space-3);
+  }
+
+  main {
+    padding-block: var(--space-5) var(--space-6);
+  }
+
+  /* Running text stays at a readable line length, whatever the page width. */
+  main > * {
+    max-width: var(--width-content);
+  }
+}

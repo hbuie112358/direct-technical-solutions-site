@@ -1,0 +1,90 @@
+/* Components: the skip link, header, navigation, footer and entry lists. Tokens only. */
+@layer components {
+  /* Off-screen until focused, then shown at the top left (WCAG 2.4.1). It is moved up by its own
+     full height, so it stays hidden at any text size; a fixed offset would let a link enlarged by
+     the visitor's text settings show through. :focus, not :focus-visible, so that focus moved by
+     a script reveals it too. */
+  .skip-link {
+    position: absolute;
+    inset-inline-start: var(--space-3);
+    inset-block-start: 0;
+    transform: translateY(-100%);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-surface);
+    border-radius: var(--radius-small);
+  }
+
+  .skip-link:focus {
+    transform: translateY(var(--space-2));
+  }
+
+  .site-header {
+    border-block-end: var(--width-border) solid var(--color-border);
+  }
+
+  .site-header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-block: var(--space-3);
+  }
+
+  .logo {
+    display: block;
+    height: var(--height-logo);
+    width: auto;
+  }
+
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-nav a[aria-current="page"] {
+    font-weight: var(--font-weight-heading);
+  }
+
+  .site-footer {
+    border-block-start: var(--width-border) solid var(--color-border);
+    padding-block: var(--space-4);
+    font-size: var(--font-size-small);
+    color: var(--color-text-muted);
+  }
+
+  .entry-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .entry {
+    padding-block: var(--space-4);
+    border-block-end: var(--width-border) solid var(--color-border);
+  }
+
+  .entry__title {
+    display: inline;
+    margin: 0;
+    font-size: var(--font-size-large);
+  }
+
+  .status {
+    display: inline-block;
+    padding-inline: var(--space-2);
+    border-radius: var(--radius-small);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: var(--font-size-small);
+  }
+
+  .lead {
+    font-size: var(--font-size-large);
+    color: var(--color-text-muted);
+  }
+}

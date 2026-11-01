@@ -1,0 +1,9 @@
+{{ define "main" }}
+{{- partial "validate-project.html" . -}}
+<article>
+  <h1>{{ .Title }}</h1>
+  <p>Status: {{ partial "project-status.html" .Params.status }}</p>
+  <p class="lead">{{ .Description }}</p>
+  {{ .Content }}
+</article>
+{{ end }}

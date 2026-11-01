@@ -11,3 +11,4 @@ the user decides. A replaced decision is kept and marked "replaced by NNNN".
 | 0002 | [Styling: plain CSS with design tokens](0002-styling.md)        | Accepted | 2026-10-30 |
 | 0003 | [Development environment: a devcontainer](0003-development-container.md) | Accepted | 2026-11-01 |
 | 0004 | [Testing shell scripts: plain bash test scripts](0004-testing-shell-scripts.md) | Accepted | 2026-11-01 |
+| 0005 | [Site scaffold: layout, Hugo settings and the logo](0005-site-scaffold.md) | Accepted | 2026-11-01 |

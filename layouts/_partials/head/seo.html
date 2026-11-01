@@ -1,0 +1,11 @@
+{{- /* Title, description and canonical address, then Hugo's built-in Open Graph, Twitter card
+and schema.org partials (R9). schema.html writes meta tags, not a script block, so the
+Content-Security-Policy needs nothing for it. */ -}}
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+{{- with .Description }}
+<meta name="description" content="{{ . }}">
+{{- end }}
+<link rel="canonical" href="{{ .Permalink }}">
+{{ partial "opengraph.html" . }}
+{{ partial "twitter_cards.html" . }}
+{{ partial "schema.html" . }}

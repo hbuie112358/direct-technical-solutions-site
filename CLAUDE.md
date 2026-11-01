@@ -19,7 +19,13 @@ this repository.
   locally. The site goes on a new domain (not chosen yet).
 
 ## Commands
-Not set up yet; added with the project scaffold.
+Run inside the development container, from the repository root:
+- `hugo server --port 4313 --panicOnWarning`: local preview at http://localhost:4313 (VS Code
+  forwards the port; not yet tried).
+- `hugo --panicOnWarning --gc --minify`: the build, into `public/` (ignored by git).
+- `hugo new content projects/<name>.md`: a new project entry from the archetype.
+
+Warnings fail the build (decision 0005).
 
 ## Testing
 For the site, not set up yet: the tools for each level of the global `TESTING_APPROACH.md` are
@@ -107,6 +113,14 @@ standard.
 
 *Why:* the global methodology names application code and configuration; web files are partly
 both.
+
+### Branches
+Every change is made on its own branch (`<type>/<short-name>`, the type as in the commit
+message, e.g. `feat/site-scaffold`), never directly on `main`. Claude merges into `main` with
+`git merge --no-ff` only after the review gates have passed and the user says so, then deletes
+the branch; with a GitHub remote, the merge becomes a pull request. Pause commits go on the
+current branch. *Why:* `main` holds only reviewed work, and each change stays visible as one
+unit in the public history. Adopted 2026-11-01 as a trial; the user reviews how it works.
 
 ### Decisions are recorded
 Every choice of tool, dependency, architecture or security control gets a record in

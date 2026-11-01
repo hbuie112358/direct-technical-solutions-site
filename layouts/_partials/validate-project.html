@@ -1,0 +1,16 @@
+{{- /*
+Stops the build on an invalid project entry, naming the file (R4; the project's Framework rules).
+The required fields and the allowed statuses are in hugo.toml under params.projects. Drafts are
+not built, so they are checked when they are published.
+*/ -}}
+{{- $file := .File.Path -}}
+{{- range site.Params.projects.requiredFields -}}
+  {{- if not (index $.Params .) -}}
+    {{- errorf "%s: required field %q is missing or empty" $file . -}}
+  {{- end -}}
+{{- end -}}
+{{- with .Params.status -}}
+  {{- if not (in site.Params.projects.statuses .) -}}
+    {{- errorf "%s: status %q is not one of %v" $file . site.Params.projects.statuses -}}
+  {{- end -}}
+{{- end -}}

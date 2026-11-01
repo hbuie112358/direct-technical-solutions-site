@@ -1,0 +1,9 @@
+{{- /*
+Stops the build on any Hugo but the pinned one (decision 0001: the version is pinned exactly).
+Hugo's own module.hugoVersion setting only warns; errorf fails the build with a clear message.
+Called once per build through partialCached in baseof.html.
+*/ -}}
+{{- $required := site.Params.requiredHugoVersion -}}
+{{- if ne hugo.Version $required -}}
+  {{- errorf "this site is built with Hugo %s (params.requiredHugoVersion); found %s" $required hugo.Version -}}
+{{- end -}}

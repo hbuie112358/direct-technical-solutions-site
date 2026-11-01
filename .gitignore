@@ -1,0 +1,8 @@
+# Hugo's build output and caches: produced by every build, never edited by hand.
+/public/
+/resources/_gen/
+.hugo_build.lock
+
+# Security rule 6: secrets come from the environment, never from the repository.
+.env
+.env.*

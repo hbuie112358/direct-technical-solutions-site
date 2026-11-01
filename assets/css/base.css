@@ -1,0 +1,52 @@
+/* Element defaults: a small reset, type, links and focus. Uses tokens only (decision 0002). */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-body);
+    color: var(--color-text);
+    background: var(--color-background);
+  }
+
+  h1,
+  h2 {
+    line-height: var(--line-height-heading);
+    font-weight: var(--font-weight-heading);
+  }
+
+  h1 {
+    font-size: var(--font-size-heading-1);
+  }
+
+  h2 {
+    font-size: var(--font-size-heading-2);
+  }
+
+  a {
+    color: var(--color-accent);
+    transition: color var(--duration-short) ease-out;
+  }
+
+  /* A visible focus ring for keyboard users only; mouse clicks do not show it (WCAG 2.4.7). */
+  :focus-visible {
+    outline: var(--width-focus-ring) solid var(--color-focus);
+    outline-offset: var(--space-1);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  code,
+  pre {
+    font-family: var(--font-mono);
+  }
+}

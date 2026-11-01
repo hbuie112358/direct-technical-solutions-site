@@ -1,0 +1,3 @@
+{{- /* A project's status in words ("in-development" becomes "in development"); the class
+lets each status be styled from the tokens. */ -}}
+<span class="status status--{{ . }}">{{ replace . "-" " " }}</span>
