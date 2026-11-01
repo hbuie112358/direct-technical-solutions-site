@@ -92,14 +92,9 @@ to be trusted evidence of the user's work; one inflated claim discredits the res
   before it goes onto the site or into the decision log.
 
 ### No personal data in committed files
-Files committed to this repository, `project-state.yaml` included, contain no personal data:
-no local usernames or home-folder paths (write `~`, or name the folder by its role, such as
-"the project's data folder"), no host names, network addresses, personal email addresses or
-account numbers. Commits use the user's GitHub noreply address. Claude checks a change for these
-before committing it. When Claude is unsure whether something is personal or borderline (a
-business detail, a name, a location, a description of the user's setup), Claude asks the user
-before committing it rather than deciding alone. *Why:* the repository is public, and its history keeps whatever was ever
-committed. Adopted 2026-11-01; earlier commits are left as they are.
+The global rule on personal data applies (`~/.claude/WORKING_STYLE.md`). Here it matters most:
+the repository is public. Commits use the user's GitHub noreply address, set in this
+repository's git configuration. Adopted 2026-11-01; earlier commits are left as they are.
 
 ### Security rules for Claude
 The site is secure, and visibly so: each control is in the code, explained, and tested. *Why:*
