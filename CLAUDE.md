@@ -12,10 +12,13 @@ user in partnership with Claude, with its decisions, rules and controls on publi
 this repository.
 
 ## Where things are
+- The repository is public: https://github.com/hbuie112358/direct-technical-solutions-site
+  (decision 0007).
 - `docs/decisions/`: the decision log, one file per decision, indexed in its `README.md`. The
   site's requirements (R1–R9) are stated in decision 0001.
 - `docs/security/threat-model.md`: the threat model; so far it covers the development
-  environment.
+  environment and the site's build settings.
+- `tests/site/`: the Go tests of the built site (decision 0006).
 - `project-state.yaml`: the session state, written at each pause and read at resume.
 - Hosting: not decided; chosen by fit when deployment is planned, after the site is built
   locally. The site goes on a new domain (not chosen yet).

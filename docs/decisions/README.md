@@ -13,3 +13,4 @@ the user decides. A replaced decision is kept and marked "replaced by NNNN".
 | 0004 | [Testing shell scripts: plain bash test scripts](0004-testing-shell-scripts.md) | Accepted | 2026-11-01 |
 | 0005 | [Site scaffold: layout, Hugo settings and the logo](0005-site-scaffold.md) | Accepted | 2026-11-01 |
 | 0006 | [Testing the built site: Go tests](0006-site-test-tools.md) | Accepted | 2026-11-01 |
+| 0007 | [The repository is public, on GitHub](0007-public-repository.md) | Accepted | 2026-11-01 |

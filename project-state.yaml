@@ -1,0 +1,96 @@
+project: direct_technical_solutions
+timestamp: 2026-11-01T08:47:00-05:00
+current_branch: feat/site-scaffold
+last_commit: f84de6a
+working_mode: none
+active_plan: none
+
+last_work: >
+  After the rebuild with --umask 0022: all exec processes 0022 (also from the host); world-writable
+  leftovers cleaned (4 .git entries, the container's Claude volume). Review item #2: plain bash
+  tests for the start guard and the umask (decision 0004, 6+1 cases, each fails when its control
+  is removed); first threat model docs/security/threat-model.md; #3 note in 0003. Devcontainer
+  committed on main (c0413a1). The originating project's session added rule 11 (umask) and the
+  rule 10 checks to DEVCONTAINER_SETUP.md. New standing rule in the project's CLAUDE.md: one
+  branch per change, merge with --no-ff after reviews and the user's go (trial). On branch
+  feat/site-scaffold: the Hugo scaffold (cf07ffb; decision 0005): layouts, CSS tokens (colours
+  from the logo: background #f5f4f3, navy #103451; contrast checked), project validation and
+  Hugo version check by errorf, security settings (generator off, highlight classes, raw HTML
+  off, [security] no remote fetch / no exec, six embed shortcodes overridden to fail), logo
+  original in assets/images (AI-generated with OpenAI gpt-image per its C2PA manifest, recorded
+  in 0005, ba7dd74). Code review (10 findings, fixed or deferred) and security review done.
+  Site test tools chosen: Go tests (decision 0006); Go 1.27.3 added to the Dockerfile with
+  checksum and GOTOOLCHAIN=local (f84de6a; download and checksum verified in the scratchpad).
+  The container has NOT been rebuilt with Go yet.
+
+next_action: >
+  1. The user rebuilds the container (Dev Containers: Rebuild Container) and types resume.
+  2. Claude checks `go version` (expect go1.27.3), `go env GOTOOLCHAIN` (local) and umask (0022).
+  3. Claude writes .devcontainer/tests/container-go-toolchain.test.sh (decision 0004 style):
+  GOTOOLCHAIN is local, and a go.mod asking for a newer Go fails instead of downloading; then
+  removes it from "controls without a test" in the threat model.
+  4. Claude writes the Go site tests (decision 0006) in their own module (module path: ask the
+  user, see pending_decisions): each test builds its own copy of the site with fixture pages
+  into a temp dir and checks: no generator tag (T3); no style= from a code block (T4); raw HTML
+  in Markdown not in output (T5); a resources.GetRemote fetch and each of the six embed
+  shortcodes fail the build (T6); each missing required field, unknown status fail naming the
+  file, a valid entry builds (R4); a wrong Hugo version fails (via HUGO_PARAMS_REQUIREDHUGOVERSION).
+  Each test checked to fail when its control is removed. golang.org/x/net/html gets recorded in
+  0006 when first used. Update the threat model (T3-T6 tests), the project's CLAUDE.md Testing.
+  5. Code review and security review, commit; then merge feat/site-scaffold into main with
+  --no-ff after the user's go, delete the branch.
+
+verification:
+  framework: "Hugo 0.169.0 (released 2026-10-27) pinned in Dockerfile and hugo.toml params.requiredHugoVersion"
+  hugo_facts: "checked on 0.169.0: built-in partials opengraph.html, twitter_cards.html, schema.html (meta tags, no script); module.hugoVersion only warns; noClasses default true; generator tag injected unless disableHugoGeneratorInject; security.http.urls ['none'] refuses GetRemote; security.exec.allow ['none'] blocks git (enableGitInfo fails); privacy.<x>.disable drops embeds silently; existing embed shortcodes youtube, vimeo, vimeo_simple, x, x_simple, instagram (twitter/tweet/gist removed in 0.156.0)"
+  go: "1.27.3 released 2026-10-19 (security fixes crypto/x509); linux-amd64 SHA-256 65efbc80fdc1fa2cd2631cad5b481777a68e8725f34e89f50fc6ac714e379b40 from go.dev/dl JSON; verified by download in the scratchpad"
+  base_image: "debian:trixie-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4; apt snapshot 20261027T000000Z"
+  docker: "rootless, Docker 29.9.2; moby/moby#53985 (exec umask 0000) worked around with --umask 0022, verified after rebuild 2026-11-01; fix PR moby/moby#54026 open"
+  logo: "1752x898 PNG, C2PA manifest: OpenAI gpt-image, trainedAlgorithmicMedia, 2026-08-13; crop 1460x520 center, rendered x96 webp; dominant colours #f5f4f3, #103451"
+  rule_10_checks: "done 2026-11-01 (root, owner, git status, hook, umask 0022)"
+  security_review_command: "/security-review fails: it diffs against origin/HEAD and the repository has no remote; Claude reviews directly"
+  hugo_server_forwarding: "port 4313 forwarding by VS Code not yet tried"
+  hosting: "not decided; chosen by fit at deployment"
+  git_identity: "commits use the user's GitHub noreply address, set in this repository's git config"
+
+uncommitted_changes:
+  - file: .vscode/settings.json
+    reason: "Not created by Claude (sets python.languageServer None). Waiting for the user: keep and commit, ignore, or delete."
+
+pending_decisions:
+  - question: "Go module path for the site tests"
+    options: ["github.com/<account>/<repository> (the user gives it)", "a neutral placeholder, changed when the remote exists"]
+    recommendation: "the GitHub path if known; otherwise a placeholder"
+  - question: "Site description (meta description) and default share image (review M1)"
+    options: ["the user writes one or two sentences with the content step"]
+    recommendation: "deferred to the content step by the user"
+  - question: "British or American spelling for the site (locale is 'en' for now)"
+    options: ["en-gb", "en-us"]
+    recommendation: "none yet; decided with the content"
+  - question: "Report or follow moby/moby#53985 upstream"
+    options: ["subscribe or comment from the user's account", "nothing"]
+    recommendation: "none; the user's choice"
+  - question: "Threat model A3: initializeCommand runs a repository script on the host at every start"
+    options: ["add as an accepted risk", "leave"]
+    recommendation: "add next time the threat model is edited"
+  - question: "Add a dated note to decision 0001 that Hugo's version is now verified (0.169.0, see 0003)"
+    options: ["add note", "leave"]
+    recommendation: "add note"
+  - question: ".vscode/settings.json: keep and commit, gitignore, or delete"
+    options: ["commit", "ignore", "delete"]
+    recommendation: "none given"
+  - question: "Remove the test image direct-technical-solutions-dev-check"
+    options: ["docker image rm direct-technical-solutions-dev-check", "keep"]
+    recommendation: "remove; harmless either way"
+  - question: "Deployment: build into an empty folder (--cleanDestinationDir); CSP headers set by the host"
+    options: ["decided at deployment"]
+    recommendation: "note for the deployment step"
+  - question: "Later test decisions: link checking (lychee, htmltest), browser and accessibility tests (Playwright: Java, JavaScript, or Go community mxschmitt/playwright-go)"
+    options: ["own decision records"]
+    recommendation: "after the merge"
+  - question: "Contact form handler (language and runtime)"
+    options: ["decided with the host at deployment; Go is the candidate"]
+    recommendation: "none yet"
+  - question: "A global GO_STANDARDS.md"
+    options: ["write when Go code is first needed"]
+    recommendation: "Go code comes with the site tests next; Claude raises it before writing them"
