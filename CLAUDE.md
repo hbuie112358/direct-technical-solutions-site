@@ -12,7 +12,8 @@ this repository.
 ## Where things are
 - `docs/decisions/`: the decision log, one file per decision, indexed in its `README.md`. The
   site's requirements (R1–R9) are stated in decision 0001.
-- `docs/security/threat-model.md`: the threat model (not written yet).
+- `docs/security/threat-model.md`: the threat model; so far it covers the development
+  environment.
 - `project-state.yaml`: the session state, written at each pause and read at resume.
 - Hosting: not decided; chosen by fit when deployment is planned, after the site is built
   locally. The site goes on a new domain (not chosen yet).
@@ -21,8 +22,13 @@ this repository.
 Not set up yet; added with the project scaffold.
 
 ## Testing
-Not set up yet. The tools for each level of the global `TESTING_APPROACH.md` are chosen in a
-decision record when the scaffold is created.
+For the site, not set up yet: the tools for each level of the global `TESTING_APPROACH.md` are
+chosen in a decision record when the scaffold is created.
+
+Shell scripts are tested by plain bash scripts next to them (decision 0004):
+- `bash .devcontainer/tests/check-host-before-start.test.sh`: unit level, runs anywhere.
+- `bash .devcontainer/tests/container-umask.test.sh`: scenario level, inside the running
+  container.
 
 ## Framework
 Hugo, as a static site generator (decision 0001); plain CSS with design tokens (decision

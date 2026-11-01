@@ -1,0 +1,54 @@
+// The development container for this site (decision 0003), set up by the user's shared rules in
+// ~/.claude/DEVCONTAINER_SETUP.md. The rule numbers below refer to that file.
+{
+  "name": "direct_technical_solutions",
+  "build": { "dockerfile": "Dockerfile" },
+  // A fixed name keeps one container per project. If a start fails with "name is already in use",
+  // an old container was left behind: check it with `docker ps -a --filter name=<this name>`, then
+  // remove that one container by name.
+  //
+  // --umask 0022: since Docker 29.6, rootless dockerd runs with umask 0000 and every `docker exec`
+  // process inherits it, so files VS Code and Claude create would be writable by every account on
+  // the host (moby/moby#53985). Setting the umask on the container gives exec processes 0022 too.
+  // Remove once the installed Docker includes the upstream fix (moby/moby#54026).
+  "runArgs": ["--name", "direct-technical-solutions-dev", "--umask", "0022"],
+
+  // Rules 1 and 3: refuse to start unless Docker is rootless (and the data folder exists).
+  "initializeCommand": "bash .devcontainer/check-host-before-start.sh \"${localEnv:HOME}/data/direct_technical_solutions\"",
+
+  // Rule 2: run as the container's root, which rootless Docker maps to the user's host account.
+  // The base image's default user is already root, so no containerUser is needed.
+  "remoteUser": "root",
+
+  // Rule 4: mounted at its own host path, never a shared /workspace, so Claude Code keeps this
+  // project's sessions and memory in this project's folder.
+  "workspaceMount": "source=${localWorkspaceFolder},target=${localWorkspaceFolder},type=bind",
+  "workspaceFolder": "${localWorkspaceFolder}",
+
+  "mounts": [
+    // Rule 5: the shared rules from the host, and the container's own Claude folder for its login.
+    "source=${localEnv:HOME}/.claude,target=/root/.claude,type=bind",
+    "source=direct-technical-solutions-claude,target=/root/.claude-container,type=volume",
+    // Rule 6: this project's own data folder; it sees no other project's data.
+    "source=${localEnv:HOME}/data/direct_technical_solutions,target=/data,type=bind"
+  ],
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/root/.claude-container"
+  },
+
+  // Rule 5: link the shared rule files and this project's folder into the container's Claude folder.
+  "postStartCommand": "bash .devcontainer/link-claude-folder.sh \"${containerWorkspaceFolder}\"",
+  "waitFor": "postStartCommand",
+
+  // Rule 8: this project's own port for `hugo server`, so it never clashes with another project.
+  "forwardPorts": [4313],
+  "portsAttributes": {
+    "4313": { "label": "Hugo server" }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["anthropic.claude-code"]
+    }
+  }
+}
