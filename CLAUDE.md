@@ -46,6 +46,11 @@ Shell scripts are tested by plain bash scripts next to them (decision 0004):
   container.
 - `bash .devcontainer/tests/container-go-toolchain.test.sh`: scenario level, inside the running
   container.
+- `bash tests/ci/workflows.test.sh`: the GitHub Actions rules (security rule 8), runs anywhere.
+
+Continuous integration (decision 0008) runs every check except the umask test on each pull
+request, inside the development container's image. The same checks run by hand in the container:
+`bash .github/ci/run-checks.sh`. A new check is added to that script, so CI runs it too.
 
 ## Framework
 Hugo, as a static site generator (decision 0001); plain CSS with design tokens (decision
